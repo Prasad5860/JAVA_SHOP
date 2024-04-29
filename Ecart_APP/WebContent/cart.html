@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<title>Cart</title>
+<style>
+    body {
+        padding-top: 4rem;
+    }
+
+    .navbar-nav .nav-link {
+        color: white;
+        margin-right: 1rem;
+    }
+
+    .navbar-nav .nav-link:hover {
+        color: gray;
+    }
+
+    .navbar-brand {
+        margin-right: 2rem;
+    }
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+    }
+    header {
+        background-color: #333;
+        color: white;
+        padding: 10px 20px;
+        text-align: center;
+    }
+    nav {
+        display: inline-block;
+    }
+    nav button {
+        background-color: #333;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        margin-right: 20px;
+        cursor: pointer;
+    }
+    nav button:hover {
+        background-color: #555;
+        border-radius: 10px;
+    }
+
+    .cart-item {
+        margin-top: 30px;
+        display: flex;
+        margin-bottom: 10px;
+        border: 1px solid #ccc;
+        padding: 10px;
+        width:700px;
+        margin-left: auto;
+        margin-right:auto;
+    }
+
+    .cart-item img {
+        max-width: 100px;
+        max-height: 100px;
+        margin-right: 10px;
+    }
+
+    .cart-item-details {
+        flex-grow: 1;
+    }
+
+    .cart-item-quantity {
+        margin-right: 10px;
+    }
+
+    .cart-item-remove {
+        cursor: pointer;
+        color: red;
+        height: 40px;
+        border-radius: 10px;
+    }
+    input[type='number']{
+        height: 40px;
+        border-radius: 10px;
+    }
+    .buy{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin:20px;
+    }
+    .buy button{
+    padding:20px;
+    background-color: coral;
+    border-radius: 15px;
+    cursor: pointer;
+    }
+
+    @media screen and (max-width: 600px) {
+        .cart-item {
+            flex-direction: column;
+        }
+
+        .cart-item img {
+            margin: 0 auto 10px;
+        }
+    }
+</style>
+</head>
+<body>
+    <header>
+        <h1>Shopping Cart</h1>
+        <nav>
+          <button onclick="openHomePage()">Home</button>
+          <button id="crt">Cart</button>
+          <button onclick="location.href='#'">Logout</button>
+        </nav>
+      </header>
+<div id="cart">
+    <!-- Sample cart items -->
+    
+</div>
+
+<script>
+       $(document).ready(function(){
+        $('#cart').empty()
+        let arr = JSON.parse(localStorage.getItem("arr")) || [];
+        arr.forEach(item => {
+            var pdiv = '<div class="cart-item">' +
+                        '<img src="' + item.img + '" alt="' + item.name + '">' +
+                        '<div class="cart-item-details"' +
+                        '<h1>' + item.name  + '</h1>' +
+                        '<p><b>Price</b>: ' + item.price + '</p>' +
+                        '<p><b>Quantity:</b> ' + item.quantity + '</p>' +  
+                        '</div>' + 
+                        '<button class="cart-item-remove" onclick="RemoveItem(\'' + item.id + '\')">Remove</button>' +
+                        '</div>';
+                $('#cart').append(pdiv);
+        })
+        $('#cart').append('<div class="buy">'+'<button id ="Buy">Buy Now</button>'+'</div>')
+
+        $(document).on('click', '.cart-item-remove', function() {
+            $(this).closest('.cart-item').remove();
+        });
+
+       })
+       function RemoveItem(id){
+            console.log(id)
+            let arr = JSON.parse(localStorage.getItem("arr")) || [];
+            let found = false;
+            arr.forEach((item, index) => {
+                if (item.id == id) {
+                    arr.splice(index, 1);
+                    localStorage.setItem("arr", JSON.stringify(arr));
+                }
+            });
+            if(arr.length == 0){
+                alert("CART IS EMPTY");
+            }
+        }
+
+        function openHomePage() {
+            window.open("home.html", "_self");
+        }
+
+
+</script>
+
+</body>
+</html>
